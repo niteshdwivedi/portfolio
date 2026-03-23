@@ -2,26 +2,35 @@ import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUp,
   ArrowUpRight,
   Award,
+  BrainCircuit,
   BriefcaseBusiness,
   ChevronRight,
+  Code2,
+  Database,
   Download,
   ExternalLink,
+  GraduationCap,
   Github,
   Linkedin,
   Mail,
   Menu,
   MoonStar,
   Phone,
+  Smartphone,
   Sparkles,
   SunMedium,
+  Wrench,
   X,
 } from "lucide-react";
 import profileImage from "../profile2.jpeg";
 import {
   aiCards,
   certificates,
+  currentlyLearning,
+  educationItems,
   impactStats,
   navItems,
   projects,
@@ -37,6 +46,7 @@ const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0 } };
 function App() {
   const [theme, setTheme] = useState("dark");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("portfolio-theme");
@@ -47,6 +57,13 @@ function App() {
     document.body.classList.toggle("light", theme === "light");
     window.localStorage.setItem("portfolio-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 500);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const styles = useMemo(
     () => ({
@@ -122,22 +139,37 @@ function App() {
             <motion.div initial="hidden" animate="show" variants={fadeUp} transition={{ duration: 0.7 }}>
               <div className="section-kicker">
                 <Sparkles className="h-4 w-4" />
-                Premium Portfolio for Recruiter Attention
+                Honest Builder • Learning Fast • Shipping Real Projects
               </div>
               <h1 className="max-w-4xl font-display text-5xl font-semibold leading-tight md:text-7xl">
-                Data engineer mindset. Full stack delivery. AI-backed problem solving.
+                Nitesh Dwivedi
               </h1>
               <p className={`mt-6 max-w-2xl text-lg leading-8 ${styles.muted}`}>
-                I'm <span className="font-semibold text-primary-300">Nitesh Dwivedi</span>, a Big Data Analytics student at Lovely Professional University building scalable web products, data dashboards, and intelligent tools with practical impact.
+                <span className="font-semibold text-primary-300">Turning ideas into real-world applications across Web, Data, and Android.</span>
+              </p>
+              <p className={`mt-4 max-w-2xl text-lg leading-8 ${styles.muted}`}>
+                <span className="font-semibold text-primary-300">B.Tech CSE (Big Data Analytics) | Aspiring Software Developer | Android (Kotlin)</span>
+              </p>
+              <p className={`mt-4 max-w-2xl text-lg leading-8 ${styles.muted}`}>
+                Focused on full-stack development, data-driven systems, and continuously improving through real projects.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <a href="#projects" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-primary-300">
-                  Explore Projects
+                  View Projects
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <a href="#contact" className={`inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-semibold ${styles.pill}`}>
-                  Hire Me
+                  Contact
                   <BriefcaseBusiness className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://drive.google.com/file/d/1MWuWrWciLfCcNv-7273zl6TMrlrP6yp1/view?usp=sharing"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-semibold ${styles.pill}`}
+                >
+                  Resume
+                  <Download className="h-4 w-4" />
                 </a>
               </div>
               <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -169,8 +201,8 @@ function App() {
                   <img src={profileImage} alt="Nitesh Dwivedi portrait" className="h-[420px] w-full object-cover object-top" />
                 </div>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <FeatureCard title="Big Data Focus" text="Hadoop concepts, SQL analytics, BI dashboards, and system-level data thinking." theme={theme} />
-                  <FeatureCard title="AI Mindset" text="Predictive insights, automation workflows, and practical intelligence embedded in tools." theme={theme} />
+                  <FeatureCard title="Big Data Focus" text="Big data analytics, BI exposure, data analysis, and system-level thinking shaped by my specialization." theme={theme} />
+                  <FeatureCard title="Learning Mindset" text="I believe in learning by building, staying honest about my level, and improving through project work and continuous practice." theme={theme} />
                 </div>
               </SoftCard>
             </motion.div>
@@ -181,13 +213,16 @@ function App() {
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <SoftCard className="p-8 md:p-10">
               <div className="section-kicker">About Me</div>
-              <h2 className="section-title">Building systems that are useful, measurable, and scalable.</h2>
+              <h2 className="section-title">Real projects, honest growth, and consistent skill building.</h2>
               <p className={`mt-6 text-base leading-8 ${styles.muted}`}>
-                My work lives at the intersection of software engineering, analytics, and intelligent automation. I enjoy designing applications that feel polished on the surface and thoughtful underneath, from secure MERN systems to Python tools with predictive insights.
+                I am a B.Tech CSE student specializing in Big Data Analytics, starting in 2023. I have built real-world projects like a Learning Management System using the MERN stack during my training and an AI-based system performance analyzer using Python.
+              </p>
+              <p className={`mt-4 text-base leading-8 ${styles.muted}`}>
+                My main academic direction is big data analytics. Alongside that, I am currently strengthening my understanding of web development step by step and exploring Android development using Kotlin. I believe in learning by building and continuously improving my skills through hands-on projects.
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <FeatureCard title="Education" text="B.Tech CSE (Big Data Analytics), Lovely Professional University" theme={theme} />
-                <FeatureCard title="What I Bring" text="Development execution, analytics storytelling, and strong engineering fundamentals." theme={theme} />
+                <FeatureCard title="What I Bring" text="Big data specialization, hands-on project experience, and steady growth across analytics, web development, and Android learning." theme={theme} />
               </div>
             </SoftCard>
 
@@ -211,14 +246,14 @@ function App() {
         <section id="projects" className="section-shell mt-24">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <div className="section-kicker">Impact Projects</div>
-              <h2 className="section-title">Proof of execution with measurable outcomes.</h2>
+              <div className="section-kicker">Project Case Studies</div>
+              <h2 className="section-title">Projects that show execution, learning, and ownership.</h2>
             </div>
             <p className={`max-w-2xl text-base leading-7 ${styles.muted}`}>
-              Projects are framed around business value, technical depth, and ownership recruiters look for in strong early-career engineers.
+              Instead of listing tools only, these case studies show what I built, what problem I solved, and what I learned while building it.
             </p>
           </div>
-          <div className="grid gap-6 xl:grid-cols-3">
+          <div className="grid gap-6 xl:grid-cols-2">
             {projects.map((project, index) => (
               <motion.article
                 key={project.title}
@@ -233,12 +268,30 @@ function App() {
                   <div>
                     <div className="text-sm uppercase tracking-[0.26em] text-primary-300">{project.timeline}</div>
                     <h3 className="mt-3 text-2xl font-bold">{project.title}</h3>
+                    <div className={`mt-2 text-xs font-semibold uppercase tracking-[0.24em] ${styles.subtle}`}>{project.status}</div>
                   </div>
                   <a href={project.link} target="_blank" rel="noreferrer" className={`rounded-full border p-3 ${styles.pill}`}>
                     <ArrowUpRight className="h-4 w-4" />
                   </a>
                 </div>
                 <p className={`mt-5 text-sm leading-7 ${styles.muted}`}>{project.summary}</p>
+                <div className={`mt-6 rounded-3xl border p-5 ${styles.border} ${styles.cardBg}`}>
+                  <div className="text-sm font-semibold text-primary-300">Case Study Snapshot</div>
+                  <div className="mt-4 space-y-4 text-sm leading-7">
+                    <div>
+                      <div className="font-semibold">Challenge</div>
+                      <p className={styles.muted}>{project.caseStudy.challenge}</p>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Result</div>
+                      <p className={styles.muted}>{project.caseStudy.result}</p>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Learning</div>
+                      <p className={styles.muted}>{project.caseStudy.growth}</p>
+                    </div>
+                  </div>
+                </div>
                 <div className="mt-6 space-y-3">
                   {project.metrics.map((metric) => (
                     <div key={metric} className="flex items-center gap-3 text-sm">
@@ -267,11 +320,14 @@ function App() {
           <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
             <SoftCard id="skills" className="p-8 md:p-10">
               <div className="section-kicker">Skills</div>
-              <h2 className="section-title text-4xl">A hybrid profile across app engineering, analytics, and AI.</h2>
+              <h2 className="section-title text-4xl">A skill set across web engineering, Android learning, and big data foundations.</h2>
               <div className="mt-8 grid gap-5">
                 {skillGroups.map((group) => (
                   <div key={group.title} className={`rounded-3xl border p-5 ${styles.border} ${styles.cardBg}`}>
-                    <div className="text-lg font-semibold">{group.title}</div>
+                    <div className="flex items-center gap-3 text-lg font-semibold">
+                      <SkillIcon title={group.title} />
+                      {group.title}
+                    </div>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {group.items.map((item) => (
                         <Pill key={item} className={styles.pill}>
@@ -289,7 +345,7 @@ function App() {
                 <div className="section-kicker">GitHub Presence</div>
                 <h2 className="section-title text-4xl">Open-source credibility and contribution activity.</h2>
                 <p className={`mt-4 max-w-2xl text-base leading-7 ${styles.muted}`}>
-                  Embedded GitHub metrics help recruiters validate consistency, code volume, and project engagement quickly.
+                  GitHub visuals give recruiters a quick way to validate project activity, coding consistency, and my habit of learning through building.
                 </p>
                 <div className="mt-8 grid gap-5">
                   <div className={`overflow-hidden rounded-[1.5rem] border ${styles.border} bg-white`}>
@@ -303,9 +359,9 @@ function App() {
 
               <SoftCard className="p-8 md:p-10">
                 <div className="section-kicker">AI / ML</div>
-                <h2 className="section-title text-4xl">Intelligent systems with practical use cases.</h2>
+                <h2 className="section-title text-4xl">Practical AI and analytics, not just buzzwords.</h2>
                 <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
-                  My AI work is grounded in usability. I focus on predictive signals, data-backed decisions, and tools that reduce manual work.
+                  My AI work is grounded in practical outcomes. I focus on monitoring, prediction, analytics, and tools that reduce manual work.
                 </p>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   {aiCards.map((text, index) => (
@@ -315,6 +371,28 @@ function App() {
               </SoftCard>
             </div>
           </div>
+        </section>
+
+        <section id="learning" className="section-shell mt-24">
+          <SoftCard className="p-8 md:p-10">
+            <div className="section-kicker">Currently Learning</div>
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+              <div>
+                <h2 className="section-title text-4xl">Learning in public and improving through hands-on work.</h2>
+                <p className={`mt-4 max-w-2xl text-base leading-7 ${styles.muted}`}>
+                  I want recruiters to see both my current strengths and my direction. This section reflects the areas I am actively improving right now.
+                </p>
+              </div>
+              <div className="grid gap-4">
+                {currentlyLearning.map((item) => (
+                  <div key={item.title} className={`rounded-3xl border p-5 ${styles.border} ${styles.cardBg}`}>
+                    <div className="text-base font-semibold">{item.title}</div>
+                    <p className={`mt-2 text-sm leading-7 ${styles.muted}`}>{item.note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </SoftCard>
         </section>
 
         <section className="section-shell mt-24">
@@ -340,11 +418,46 @@ function App() {
 
             <SoftCard className="p-8 md:p-10">
               <div className="section-kicker">Why Me</div>
-              <h2 className="section-title text-4xl">A profile built for software, data, and analytics teams.</h2>
+              <h2 className="section-title text-4xl">Why hire me?</h2>
               <div className="mt-8 grid gap-4">
                 {whyMe.map((text, index) => (
                   <FeatureCard key={index} title={`Strength 0${index + 1}`} text={text} theme={theme} />
                 ))}
+              </div>
+            </SoftCard>
+          </div>
+        </section>
+
+        <section id="education" className="section-shell mt-24">
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <SoftCard className="p-8 md:p-10">
+              <div className="section-kicker">Education</div>
+              <h2 className="section-title text-4xl">Academic foundation aligned with software and data systems.</h2>
+              <div className="mt-8 grid gap-4">
+                {educationItems.map((item) => (
+                  <div key={item.title} className={`rounded-3xl border p-5 ${styles.border} ${styles.cardBg}`}>
+                    <div className="flex items-center gap-3">
+                      <GraduationCap className="h-5 w-5 text-primary-300" />
+                      <div className="text-base font-semibold">{item.title}</div>
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-primary-300">{item.subtitle}</div>
+                    <p className={`mt-3 text-sm leading-7 ${styles.muted}`}>{item.note}</p>
+                  </div>
+                ))}
+              </div>
+            </SoftCard>
+
+            <SoftCard className="p-8 md:p-10">
+              <div className="section-kicker">Standout Direction</div>
+              <h2 className="section-title text-4xl">Full stack delivery with Android and big data depth.</h2>
+              <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
+                My positioning is strongest where software engineering, analytics, and learning agility meet. I bring real project execution today and visible growth into backend systems, Android, and data-heavy products.
+              </p>
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <FeatureCard title="Full Stack + Android" text="I already build web applications and I am actively expanding into Android using Kotlin." theme={theme} />
+                <FeatureCard title="Big Data Mindset" text="My academic specialization gives me a strong foundation in analytics, BI, and large-scale data thinking." theme={theme} />
+                <FeatureCard title="Systems Thinking" text="I am learning APIs, microservices, NoSQL, and architecture with a focus on practical understanding." theme={theme} />
+                <FeatureCard title="Recruiter Signal" text="This portfolio is designed to show both what I can build now and how fast I am improving." theme={theme} />
               </div>
             </SoftCard>
           </div>
@@ -357,7 +470,7 @@ function App() {
                 <div className="section-kicker">Contact & Hire Me</div>
                 <h2 className="section-title">Let's build data-rich products and intelligent systems together.</h2>
                 <p className={`mt-5 max-w-2xl text-lg leading-8 ${styles.muted}`}>
-                  I'm looking for internships and opportunities where I can contribute as a software engineer, data engineer, analytics-focused developer, or AI-oriented builder.
+                  I am looking for internships and early-career opportunities where I can contribute as a big data analytics student, web development learner, Android learner, or analytics-focused builder.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   <a href="mailto:niteshdwivedi942@gmail.com" className="inline-flex items-center gap-2 rounded-full bg-primary-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-primary-300">
@@ -381,6 +494,17 @@ function App() {
           </SoftCard>
         </section>
       </main>
+
+      {showTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary-400 text-slate-950 shadow-glow transition hover:bg-primary-300"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
     </div>
   );
 }
@@ -405,6 +529,19 @@ function ContactCard({ icon: Icon, label, value, href, theme }) {
 }
 
 export default App;
+
+function SkillIcon({ title }) {
+  const common = "h-5 w-5 text-primary-300";
+
+  if (title === "Languages") return <Code2 className={common} />;
+  if (title === "Web Technologies") return <Code2 className={common} />;
+  if (title === "Android Development") return <Smartphone className={common} />;
+  if (title === "Tools") return <Wrench className={common} />;
+  if (title === "Concepts") return <BrainCircuit className={common} />;
+  if (title === "Data & Big Data") return <Database className={common} />;
+
+  return <Code2 className={common} />;
+}
 
 function AnalyticsFallback({ styles }) {
   return (
