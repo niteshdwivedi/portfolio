@@ -47,6 +47,7 @@ function App() {
   const [theme, setTheme] = useState("dark");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showTop, setShowTop] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("portfolio-theme");
@@ -59,11 +60,20 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 500);
+    let lastScrollY = window.scrollY;
+
+    const onScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      setShowTop(currentScrollY > 500);
+      setHeaderVisible(currentScrollY < 80 || currentScrollY < lastScrollY || menuOpen);
+      lastScrollY = currentScrollY;
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [menuOpen]);
 
   const styles = useMemo(
     () => ({
@@ -81,67 +91,91 @@ function App() {
     <div className="relative overflow-x-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[760px] bg-grid bg-[size:42px_42px] opacity-30" />
 
-      <header className="section-shell sticky top-0 z-50 pt-5">
-        <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full glass-panel px-5 py-3">
-          <a href="#top" className="font-display text-sm font-semibold tracking-[0.28em] text-primary-300">
-            NITESH / DATA / BUILD
-          </a>
-          <nav className="hidden items-center gap-8 lg:flex">
-            {navItems.map((item) => (
-              <a key={item.href} href={item.href} className={`text-sm font-medium transition hover:text-primary-300 ${styles.muted}`}>
-                {item.label}
-              </a>
-            ))}
-          </nav>
-          <div className="hidden items-center gap-3 lg:flex">
-            <button
-              type="button"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm ${styles.pill}`}
-            >
-              {theme === "dark" ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
-              {theme === "dark" ? "Light" : "Dark"} mode
-            </button>
-            <a
-              href="https://drive.google.com/file/d/1MWuWrWciLfCcNv-7273zl6TMrlrP6yp1/view?usp=sharing"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-primary-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-primary-300"
-            >
-              Resume
-              <Download className="h-4 w-4" />
+      <header
+        className={`fixed inset-x-0 top-0 z-50 pt-5 transition-transform duration-300 ${headerVisible ? "translate-y-0" : "-translate-y-full"}`}
+      >
+        <div className="section-shell">
+          <div
+            className={`mx-auto flex max-w-6xl items-center justify-between rounded-[1.75rem] border px-5 py-3 shadow-soft backdrop-blur-2xl ${
+              theme === "dark" ? "border-white/10 bg-slate-950/75" : "border-slate-200/80 bg-white/85"
+            }`}
+          >
+            <a href="#top" className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-primary-400/30 bg-primary-400/10 font-display text-sm font-semibold tracking-[0.2em] text-primary-300">
+                ND
+              </div>
+              <div>
+                <div className={`font-display text-sm font-semibold uppercase tracking-[0.26em] ${theme === "dark" ? "text-white" : "text-slate-950"}`}>Nitesh Dwivedi</div>
+                <div className={`text-[11px] uppercase tracking-[0.24em] ${styles.subtle}`}>Software / Data / Android</div>
+              </div>
             </a>
-          </div>
-          <button type="button" className={`rounded-full border p-2 lg:hidden ${styles.pill}`} onClick={() => setMenuOpen((v) => !v)}>
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="mt-3 rounded-3xl glass-panel p-5 lg:hidden">
-            <div className="flex flex-col gap-4">
+            <nav className="hidden items-center gap-8 lg:flex">
               {navItems.map((item) => (
-                <a key={item.href} href={item.href} className={`text-sm font-medium ${styles.muted}`} onClick={() => setMenuOpen(false)}>
+                <a key={item.href} href={item.href} className={`text-sm font-medium transition hover:text-primary-300 ${styles.muted}`}>
                   {item.label}
                 </a>
               ))}
-              <button type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className={`rounded-full border px-4 py-2 text-sm ${styles.pill}`}>
-                Toggle theme
+            </nav>
+            <div className="hidden items-center gap-3 lg:flex">
+              <button
+                type="button"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm ${styles.pill}`}
+              >
+                {theme === "dark" ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+                {theme === "dark" ? "Light" : "Dark"} mode
               </button>
+              <a
+                href="https://drive.google.com/file/d/1MWuWrWciLfCcNv-7273zl6TMrlrP6yp1/view?usp=sharing"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-primary-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-primary-300"
+              >
+                Resume
+                <Download className="h-4 w-4" />
+              </a>
+            </div>
+            <button type="button" className={`rounded-full border p-2 lg:hidden ${styles.pill}`} onClick={() => setMenuOpen((v) => !v)}>
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+
+        {menuOpen && (
+          <div className="section-shell">
+            <div className="mx-auto mt-3 max-w-6xl rounded-3xl glass-panel p-5 lg:hidden">
+              <div className="flex flex-col gap-4">
+                {navItems.map((item) => (
+                  <a key={item.href} href={item.href} className={`text-sm font-medium ${styles.muted}`} onClick={() => setMenuOpen(false)}>
+                    {item.label}
+                  </a>
+                ))}
+                <button type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className={`rounded-full border px-4 py-2 text-sm ${styles.pill}`}>
+                  Toggle theme
+                </button>
+              </div>
             </div>
           </div>
         )}
       </header>
 
-      <main id="top" className="pb-20">
-        <section className="section-shell pt-10 md:pt-16">
+      <main id="top" className="pb-20 pt-28 md:pt-32">
+        <section className="section-shell pt-8 md:pt-12">
           <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <motion.div initial="hidden" animate="show" variants={fadeUp} transition={{ duration: 0.7 }}>
               <div className="section-kicker">
                 <Sparkles className="h-4 w-4" />
-                Honest Builder • Learning Fast • Shipping Real Projects
+                Honest Builder / Learning Fast / Shipping Real Projects
               </div>
-              <h1 className="max-w-4xl font-display text-5xl font-semibold leading-tight md:text-7xl">
+              <div className={`mb-5 inline-flex items-center gap-3 rounded-full border px-4 py-2 text-xs uppercase tracking-[0.3em] ${styles.pill}`}>
+                <span className="h-2 w-2 rounded-full bg-primary-300" />
+                Crafted digital identity
+              </div>
+              <h1
+                className={`hero-name max-w-4xl font-display text-[2.7rem] font-semibold leading-[0.95] tracking-tight sm:text-6xl md:text-7xl ${
+                  theme === "dark" ? "hero-name-dark" : "hero-name-light"
+                }`}
+              >
                 Nitesh Dwivedi
               </h1>
               <p className={`mt-6 max-w-2xl text-lg leading-8 ${styles.muted}`}>
