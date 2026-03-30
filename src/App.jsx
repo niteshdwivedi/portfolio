@@ -42,12 +42,47 @@ import { FeatureCard, Pill, SoftCard } from "./components";
 
 const AnalyticsSection = lazy(() => import("./AnalyticsSection"));
 const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0 } };
+const githubStatsUrl =
+  "https://github-readme-stats.vercel.app/api?username=niteshdwivedi&show_icons=true&theme=transparent&hide_border=true&title_color=22d3ee&text_color=475569&icon_color=ff7a59";
+const githubChartUrl = "https://ghchart.rshah.org/22d3ee/niteshdwivedi";
+
+function GithubStatsFallback({ theme }) {
+  const panels = [
+    { label: "Focus", value: "Web + Data" },
+    { label: "Direction", value: "Android" },
+    { label: "Style", value: "Learning in public" },
+  ];
+
+  return (
+    <div className={`rounded-[1.5rem] p-5 ${theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}>
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <div className="text-[11px] uppercase tracking-[0.28em] text-primary-300">GitHub stats preview</div>
+          <div className="mt-2 text-lg font-semibold">Nitesh Dwivedi</div>
+        </div>
+        <div className="rounded-full border border-primary-400/30 bg-primary-400/10 px-3 py-1 text-xs font-semibold text-primary-300">
+          Fallback view
+        </div>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        {panels.map((panel) => (
+          <div key={panel.label} className={`rounded-2xl border p-4 ${theme === "dark" ? "border-white/10 bg-white/5" : "border-slate-200 bg-white"}`}>
+            <div className="text-xs uppercase tracking-[0.24em] text-primary-300">{panel.label}</div>
+            <div className="mt-2 text-sm font-semibold">{panel.value}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function App() {
   const [theme, setTheme] = useState("dark");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showTop, setShowTop] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
+  const [nameStyle, setNameStyle] = useState("static");
+  const [githubStatsFailed, setGithubStatsFailed] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("portfolio-theme");
@@ -55,9 +90,18 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const stored = window.localStorage.getItem("portfolio-name-style");
+    if (stored === "animated" || stored === "static") setNameStyle(stored);
+  }, []);
+
+  useEffect(() => {
     document.body.classList.toggle("light", theme === "light");
     window.localStorage.setItem("portfolio-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    window.localStorage.setItem("portfolio-name-style", nameStyle);
+  }, [nameStyle]);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -173,16 +217,20 @@ function App() {
               </div>
               <h1
                 className={`hero-name max-w-4xl font-display text-[2.7rem] font-semibold leading-[0.95] tracking-tight sm:text-6xl md:text-7xl ${
-                  theme === "dark" ? "hero-name-dark" : "hero-name-light"
-                }`}
+                  theme === "dark" ? "hero-name-dark text-white" : "hero-name-light text-slate-950"
+                } ${nameStyle === "animated" ? "hero-name-animated" : "hero-name-static"}`}
               >
                 Nitesh Dwivedi
               </h1>
-              <p className={`mt-6 max-w-2xl text-lg leading-8 ${styles.muted}`}>
-                <span className="font-semibold text-primary-300">Turning ideas into real-world applications across Web, Data, and Android.</span>
+              <p className={`mt-6 max-w-2xl text-lg leading-8 ${theme === "dark" ? "text-slate-300" : "text-slate-800"}`}>
+                <span className={`font-semibold ${theme === "dark" ? "text-primary-300" : "text-rose-600"}`}>
+                  Turning ideas into real-world applications across Web, Data, and Android.
+                </span>
               </p>
-              <p className={`mt-4 max-w-2xl text-lg leading-8 ${styles.muted}`}>
-                <span className="font-semibold text-primary-300">B.Tech CSE (Big Data Analytics) | Aspiring Software Developer | Android (Kotlin)</span>
+              <p className={`mt-4 max-w-2xl text-lg leading-8 ${theme === "dark" ? "text-slate-300" : "text-slate-800"}`}>
+                <span className={`font-semibold ${theme === "dark" ? "text-primary-300" : "text-rose-600"}`}>
+                  B.Tech CSE (Big Data Analytics) | Aspiring Software Developer | Android (Kotlin)
+                </span>
               </p>
               <p className={`mt-4 max-w-2xl text-lg leading-8 ${styles.muted}`}>
                 Focused on full-stack development, data-driven systems, and continuously improving through real projects.
@@ -192,6 +240,15 @@ function App() {
                   View Projects
                   <ArrowRight className="h-4 w-4" />
                 </a>
+                <button
+                  type="button"
+                  onClick={() => setNameStyle((current) => (current === "animated" ? "static" : "animated"))}
+                  className={`inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-semibold ${styles.pill}`}
+                  aria-pressed={nameStyle === "animated"}
+                >
+                  <Wrench className="h-4 w-4" />
+                  Name: {nameStyle === "animated" ? "Glow" : "Static"}
+                </button>
                 <a href="#contact" className={`inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-semibold ${styles.pill}`}>
                   Contact
                   <BriefcaseBusiness className="h-4 w-4" />
@@ -383,10 +440,20 @@ function App() {
                 </p>
                 <div className="mt-8 grid gap-5">
                   <div className={`overflow-hidden rounded-[1.5rem] border ${styles.border} bg-white`}>
-                    <img src="https://github-readme-stats.vercel.app/api?username=niteshdwivedi&show_icons=true&theme=transparent&hide_border=true&title_color=22d3ee&text_color=475569&icon_color=ff7a59" alt="GitHub stats for Nitesh Dwivedi" className="w-full" />
+                    {!githubStatsFailed ? (
+                      <img
+                        src={githubStatsUrl}
+                        alt="GitHub stats for Nitesh Dwivedi"
+                        className="w-full"
+                        loading="lazy"
+                        onError={() => setGithubStatsFailed(true)}
+                      />
+                    ) : (
+                      <GithubStatsFallback theme={theme} />
+                    )}
                   </div>
                   <div className={`overflow-hidden rounded-[1.5rem] border ${styles.border} bg-white p-2`}>
-                    <img src="https://ghchart.rshah.org/22d3ee/niteshdwivedi" alt="GitHub contribution graph for Nitesh Dwivedi" className="w-full rounded-2xl" />
+                    <img src={githubChartUrl} alt="GitHub contribution graph for Nitesh Dwivedi" className="w-full rounded-2xl" loading="lazy" />
                   </div>
                 </div>
               </SoftCard>
