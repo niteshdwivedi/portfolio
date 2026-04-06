@@ -1,7 +1,8 @@
+import lmsPreview from "./assets/lms.png";
+
 export const navItems = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
-  { label: "Analytics", href: "#analytics" },
   { label: "Learning", href: "#learning" },
   { label: "Skills", href: "#skills" },
   { label: "Education", href: "#education" },
@@ -10,7 +11,7 @@ export const navItems = [
 
 export const impactStats = [
   { label: "Core Projects", value: "4", note: "Web, AI, desktop, and Android direction" },
-  { label: "Users Supported", value: "100+", note: "Learning Management System architecture" },
+  { label: "Users Supported", value: "100+", note: "Live LMS workflows and role-based access" },
   { label: "Efficiency Gain", value: "25%", note: "AI-based system performance insights" },
   { label: "Academic Start", value: "2023", note: "B.Tech CSE with Big Data Analytics specialization" },
 ];
@@ -47,11 +48,17 @@ export const projects = [
     title: "Learning Management System",
     timeline: "June 2025 - July 2025",
     summary:
-      "Developed a full-stack Learning Management System using MERN stack with features like authentication, course management, and online exams. Built with guidance and continuously improving my understanding of backend architecture and APIs.",
+      "Developed and deployed a full-stack Learning Management System using the MERN stack with authentication, course management, online exams, and role-based access for different users.",
     metrics: ["100+ users supported", "Role-based workflows", "REST API-driven modules"],
     tech: ["MongoDB", "Express", "React", "Node", "Tailwind CSS"],
-    link: "https://github.com/niteshdwivedi/UpSkillX-LMS",
-    status: "Live project experience",
+    link: "https://up-skill-x-lms.vercel.app/",
+    preview: lmsPreview,
+    previewAlt: "UpSkillX LMS login interface preview",
+    status: "Live deployed project",
+    actions: [
+      { label: "Open Live App", href: "https://up-skill-x-lms.vercel.app/", variant: "primary" },
+      { label: "View Code", href: "https://github.com/niteshdwivedi/UpSkillX-LMS" },
+    ],
     caseStudy: {
       challenge: "Create a practical academic platform that combines frontend usability with backend logic and secure access.",
       result: "Delivered a responsive MERN application with authentication, exams, and course management during training while strengthening API and backend fundamentals.",
@@ -66,7 +73,8 @@ export const projects = [
     metrics: ["25% efficiency gain", "40% less manual analysis", "20+ processes monitored live"],
     tech: ["Python", "Tkinter", "psutil", "Matplotlib", "NumPy", "ML"],
     link: "https://github.com/niteshdwivedi/AI-Performance-Analyzer-O",
-    status: "AI + analytics project",
+    status: "AI project",
+    actions: [{ label: "View Code", href: "https://github.com/niteshdwivedi/AI-Performance-Analyzer-O" }],
     caseStudy: {
       challenge: "Reduce manual system analysis by combining monitoring signals, charts, and prediction logic in one tool.",
       result: "Created a desktop application that improved visibility into system performance and supported faster optimization decisions.",
@@ -82,6 +90,7 @@ export const projects = [
     tech: ["Python", "Tkinter", "Pillow", "OOP"],
     link: "https://github.com/niteshdwivedi/Rock-Paper-Scissor-Game",
     status: "Foundation-building project",
+    actions: [{ label: "View Code", href: "https://github.com/niteshdwivedi/Rock-Paper-Scissor-Game" }],
     caseStudy: {
       challenge: "Build an interactive desktop application while practicing clean object-oriented design.",
       result: "Created a polished game interface with reusable logic and better understanding of desktop UI flow.",
@@ -97,6 +106,7 @@ export const projects = [
     tech: ["Kotlin", "Android Studio", "XML", "REST APIs"],
     link: "#contact",
     status: "Coming soon",
+    actions: [{ label: "Contact Me", href: "#contact", variant: "primary" }],
     caseStudy: {
       challenge: "Transition from web-first development into Android and understand mobile architecture properly.",
       result: "Current focus is building strong fundamentals in Kotlin, layouts, app structure, and production-friendly thinking.",
@@ -106,36 +116,33 @@ export const projects = [
 ];
 
 export const certificates = [
-  ["IBM Big Data 101", "IBM Developer Skills Network", "February 3, 2025", "https://courses.lpu.skillsnetwork.site/certificates/66163dbe0b6241ea895c73a8ffbbb925"],
+  ["IBM Big Data", "IBM Developer Skills Network", "February 3, 2025", "https://courses.lpu.skillsnetwork.site/certificates/66163dbe0b6241ea895c73a8ffbbb925"],
   ["Business Intelligence", "IBM CEP", "February 4, 2025", "https://courses.lpu.skillsnetwork.site/certificates/d5d1214cfe6447a39531feafe6b6e086"],
-  ["Text Analytics 101", "CognitiveClass / IBM", "February 10, 2025", "https://courses.lpu.skillsnetwork.site/certificates/328f017a2f224622a8bbdc34d4df0f0d"],
+  ["Text Analytics", "CognitiveClass / IBM", "February 10, 2025", "https://courses.lpu.skillsnetwork.site/certificates/328f017a2f224622a8bbdc34d4df0f0d"],
   ["RDBMS", "IBM CEP", "March 27, 2025", "https://courses.lpu.skillsnetwork.site/certificates/661b59d975d2486cb0c40be5b0e42edc"],
   ["Introduction to Python", "IBM CEP", "March 27, 2025", "https://courses.lpu.skillsnetwork.site/certificates/0d27793105ab4ed2834dacf958c183c9"],
   ["Big Data Architecture", "IBM CEP", "March 27, 2025", "https://courses.lpu.skillsnetwork.site/certificates/0db44fd43deb4f6c97d24bb1c72cc160"],
 ].map(([title, issuer, date, link]) => ({ title, issuer, date, link }));
 
-export const analyticsTrend = [
-  { month: "Jan", performance: 58, pipeline: 28 },
-  { month: "Feb", performance: 64, pipeline: 40 },
-  { month: "Mar", performance: 72, pipeline: 48 },
-  { month: "Apr", performance: 79, pipeline: 58 },
-  { month: "May", performance: 86, pipeline: 68 },
-  { month: "Jun", performance: 92, pipeline: 75 },
-];
+export const bigDataTopics = ["Hadoop Concepts", "DBMS", "Business Intelligence", "Python", "Data Analysis", "RDBMS"];
 
-export const datasetInsights = [
-  { name: "SQL", value: 28 },
-  { name: "Dashboards", value: 24 },
-  { name: "Web Apps", value: 30 },
-  { name: "AI/ML", value: 18 },
-];
-
-export const pipelineFlow = [
-  { stage: "Raw Data", score: 86 },
-  { stage: "Cleaning", score: 92 },
-  { stage: "Modeling", score: 79 },
-  { stage: "Visualization", score: 95 },
-  { stage: "Delivery", score: 88 },
+export const bigDataCards = [
+  {
+    title: "What It Means",
+    text: "For me, big data analytics means understanding how data is collected, stored, processed, and used to support decisions in real systems.",
+  },
+  {
+    title: "Academic Base",
+    text: "My coursework and certifications cover big data, business intelligence, text analytics, DBMS, Python, and data architecture fundamentals.",
+  },
+  {
+    title: "Practical Thinking",
+    text: "I connect data thinking with software projects by focusing on clean backend flows, structured APIs, and meaningful analysis.",
+  },
+  {
+    title: "Current Direction",
+    text: "I am strengthening my foundation in Hadoop concepts, data analysis, backend systems, and problem solving for data-heavy products.",
+  },
 ];
 
 export const timeline = [
@@ -171,7 +178,7 @@ export const currentlyLearning = [
   },
   {
     title: "Data Analysis",
-    note: "Improving my ability to work with data, dashboards, structured insights, and analytical storytelling.",
+    note: "Improving my ability to work with data, extract useful insights, and explain findings clearly.",
   },
   {
     title: "Big Data Tools",
@@ -193,26 +200,7 @@ export const educationItems = [
   {
     title: "Technical Exposure",
     subtitle: "Self-driven and guided learning journey",
-    note: "Learning microservices architecture, NoSQL and MongoDB, planning analytics, Android development, and web application design through projects and continuous practice.",
-  },
-];
-
-export const spotlightCards = [
-  {
-    title: "Power BI / Tableau Dashboards",
-    text: "Executive-facing dashboards for KPIs, trend analysis, anomalies, and decision support.",
-  },
-  {
-    title: "SQL + Data Analysis",
-    text: "Querying, cleaning, aggregation, and storytelling through structured data workflows.",
-  },
-  {
-    title: "Hadoop Architecture Knowledge",
-    text: "Foundation in distributed data systems, batch processing ideas, and scale-oriented thinking.",
-  },
-  {
-    title: "Dataset Insight Stories",
-    text: "Turning raw data into charts, insights, and recruiter-friendly proof of analytical depth.",
+    note: "Learning microservices architecture, NoSQL and MongoDB, Android development, and web application design through projects and continuous practice.",
   },
 ];
 
@@ -225,7 +213,7 @@ export const aiCards = [
 
 export const whyMe = [
   "Strong learning mindset with honesty about where I am and clear momentum in where I am going.",
-  "Hands-on project experience across Python, analytics, MERN training exposure, and now Android development with Kotlin.",
+  "Hands-on project experience across Python, MERN training exposure, and now Android development with Kotlin.",
   "Quick learner who improves through building real projects instead of only studying theory.",
   "Focused on real-world problem solving with clean interfaces, useful systems, and measurable outcomes.",
 ];

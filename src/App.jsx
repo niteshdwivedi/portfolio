@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -28,6 +28,8 @@ import {
 import profileImage from "../profile2.jpeg";
 import {
   aiCards,
+  bigDataCards,
+  bigDataTopics,
   certificates,
   currentlyLearning,
   educationItems,
@@ -40,41 +42,7 @@ import {
 } from "./data";
 import { FeatureCard, Pill, SoftCard } from "./components";
 
-const AnalyticsSection = lazy(() => import("./AnalyticsSection"));
 const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0 } };
-const githubStatsUrl =
-  "https://github-readme-stats.vercel.app/api?username=niteshdwivedi&show_icons=true&theme=transparent&hide_border=true&title_color=22d3ee&text_color=475569&icon_color=ff7a59";
-const githubChartUrl = "https://ghchart.rshah.org/22d3ee/niteshdwivedi";
-
-function GithubStatsFallback({ theme }) {
-  const panels = [
-    { label: "Focus", value: "Web + Data" },
-    { label: "Direction", value: "Android" },
-    { label: "Style", value: "Learning in public" },
-  ];
-
-  return (
-    <div className={`rounded-[1.5rem] p-5 ${theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}>
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <div className="text-[11px] uppercase tracking-[0.28em] text-primary-300">GitHub stats preview</div>
-          <div className="mt-2 text-lg font-semibold">Nitesh Dwivedi</div>
-        </div>
-        <div className="rounded-full border border-primary-400/30 bg-primary-400/10 px-3 py-1 text-xs font-semibold text-primary-300">
-          Fallback view
-        </div>
-      </div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        {panels.map((panel) => (
-          <div key={panel.label} className={`rounded-2xl border p-4 ${theme === "dark" ? "border-white/10 bg-white/5" : "border-slate-200 bg-white"}`}>
-            <div className="text-xs uppercase tracking-[0.24em] text-primary-300">{panel.label}</div>
-            <div className="mt-2 text-sm font-semibold">{panel.value}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function App() {
   const [theme, setTheme] = useState("dark");
@@ -82,7 +50,6 @@ function App() {
   const [showTop, setShowTop] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [nameStyle, setNameStyle] = useState("static");
-  const [githubStatsFailed, setGithubStatsFailed] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("portfolio-theme");
@@ -313,7 +280,7 @@ function App() {
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <FeatureCard title="Education" text="B.Tech CSE (Big Data Analytics), Lovely Professional University" theme={theme} />
-                <FeatureCard title="What I Bring" text="Big data specialization, hands-on project experience, and steady growth across analytics, web development, and Android learning." theme={theme} />
+                <FeatureCard title="What I Bring" text="Big data specialization, hands-on project experience, and steady growth across web development and Android learning." theme={theme} />
               </div>
             </SoftCard>
 
@@ -361,10 +328,41 @@ function App() {
                     <h3 className="mt-3 text-2xl font-bold">{project.title}</h3>
                     <div className={`mt-2 text-xs font-semibold uppercase tracking-[0.24em] ${styles.subtle}`}>{project.status}</div>
                   </div>
-                  <a href={project.link} target="_blank" rel="noreferrer" className={`rounded-full border p-3 ${styles.pill}`}>
+                  <a
+                    href={project.link}
+                    target={project.link.startsWith("http") ? "_blank" : undefined}
+                    rel={project.link.startsWith("http") ? "noreferrer" : undefined}
+                    className={`rounded-full border p-3 ${styles.pill}`}
+                    aria-label={`Open ${project.title}`}
+                  >
                     <ArrowUpRight className="h-4 w-4" />
                   </a>
                 </div>
+                {project.preview && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`group relative mt-6 block overflow-hidden rounded-[1.75rem] border ${styles.border}`}
+                    aria-label={`Open live preview for ${project.title}`}
+                  >
+                    <img
+                      src={project.preview}
+                      alt={project.previewAlt}
+                      className="h-64 w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white">
+                      <div>
+                        <div className="text-[11px] uppercase tracking-[0.28em] text-primary-200">Live app preview</div>
+                        <div className="mt-2 text-lg font-semibold">Click to open the deployed project</div>
+                      </div>
+                      <div className="rounded-full border border-white/20 bg-white/10 p-3 backdrop-blur">
+                        <ArrowUpRight className="h-5 w-5" />
+                      </div>
+                    </div>
+                  </a>
+                )}
                 <p className={`mt-5 text-sm leading-7 ${styles.muted}`}>{project.summary}</p>
                 <div className={`mt-6 rounded-3xl border p-5 ${styles.border} ${styles.cardBg}`}>
                   <div className="text-sm font-semibold text-primary-300">Case Study Snapshot</div>
@@ -398,14 +396,28 @@ function App() {
                     </Pill>
                   ))}
                 </div>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  {project.actions.map((action) => (
+                    <a
+                      key={action.label}
+                      href={action.href}
+                      target={action.href.startsWith("http") ? "_blank" : undefined}
+                      rel={action.href.startsWith("http") ? "noreferrer" : undefined}
+                      className={
+                        action.variant === "primary"
+                          ? `inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition ${styles.solidBtn}`
+                          : `inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold ${styles.pill}`
+                      }
+                    >
+                      {action.label}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ))}
+                </div>
               </motion.article>
             ))}
           </div>
         </section>
-
-        <Suspense fallback={<AnalyticsFallback styles={styles} />}>
-          <AnalyticsSection theme={theme} styles={styles} />
-        </Suspense>
 
         <section className="section-shell mt-24">
           <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
@@ -433,36 +445,38 @@ function App() {
 
             <div className="grid gap-6">
               <SoftCard className="p-8 md:p-10">
-                <div className="section-kicker">GitHub Presence</div>
-                <h2 className="section-title text-4xl">Open-source credibility and contribution activity.</h2>
-                <p className={`mt-4 max-w-2xl text-base leading-7 ${styles.muted}`}>
-                  GitHub visuals give recruiters a quick way to validate project activity, coding consistency, and my habit of learning through building.
-                </p>
-                <div className="mt-8 grid gap-5">
-                  <div className={`overflow-hidden rounded-[1.5rem] border ${styles.border} bg-white`}>
-                    {!githubStatsFailed ? (
-                      <img
-                        src={githubStatsUrl}
-                        alt="GitHub stats for Nitesh Dwivedi"
-                        className="w-full"
-                        loading="lazy"
-                        onError={() => setGithubStatsFailed(true)}
-                      />
-                    ) : (
-                      <GithubStatsFallback theme={theme} />
-                    )}
+                <div className="section-kicker">Big Data Analytics</div>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="section-title text-4xl">The systems side of data.</h2>
+                    <p className={`mt-4 max-w-2xl text-base leading-7 ${styles.muted}`}>
+                      My specialization is in Big Data Analytics. For me, that means learning how data moves through systems, how it is stored,
+                      processed, and interpreted, and how it supports better decisions in real applications.
+                    </p>
                   </div>
-                  <div className={`overflow-hidden rounded-[1.5rem] border ${styles.border} bg-white p-2`}>
-                    <img src={githubChartUrl} alt="GitHub contribution graph for Nitesh Dwivedi" className="w-full rounded-2xl" loading="lazy" />
+                  <div className="hidden rounded-3xl border border-primary-400/20 bg-primary-400/10 p-4 text-primary-300 md:block">
+                    <Database className="h-7 w-7" />
                   </div>
+                </div>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {bigDataTopics.map((topic) => (
+                    <Pill key={topic} className={styles.pill}>
+                      {topic}
+                    </Pill>
+                  ))}
+                </div>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {bigDataCards.map((card) => (
+                    <FeatureCard key={card.title} title={card.title} text={card.text} theme={theme} />
+                  ))}
                 </div>
               </SoftCard>
 
               <SoftCard className="p-8 md:p-10">
                 <div className="section-kicker">AI / ML</div>
-                <h2 className="section-title text-4xl">Practical AI and analytics, not just buzzwords.</h2>
+                <h2 className="section-title text-4xl">Practical AI work, not just buzzwords.</h2>
                 <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
-                  My AI work is grounded in practical outcomes. I focus on monitoring, prediction, analytics, and tools that reduce manual work.
+                  My AI work is grounded in practical outcomes. I focus on monitoring, prediction, and tools that reduce manual work.
                 </p>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   {aiCards.map((text, index) => (
@@ -500,10 +514,19 @@ function App() {
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <SoftCard className="p-8 md:p-10">
               <div className="section-kicker">Certifications</div>
-              <h2 className="section-title text-4xl">Validated learning across data, BI, and Python.</h2>
-              <div className="mt-8 space-y-4">
+              <h2 className="section-title text-4xl">Validated learning across big data, BI, and Python.</h2>
+              <p className={`mt-4 max-w-2xl text-base leading-7 ${styles.muted}`}>
+                Selected certifications that support my academic focus and show steady learning in data-related subjects.
+              </p>
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
                 {certificates.map((certificate) => (
-                  <a key={certificate.title} href={certificate.link} target="_blank" rel="noreferrer" className={`flex items-start gap-4 rounded-3xl border p-4 transition hover:border-primary-400/40 ${styles.border} ${styles.cardBg}`}>
+                  <a
+                    key={certificate.title}
+                    href={certificate.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`flex h-full items-start gap-4 rounded-3xl border p-5 transition hover:border-primary-400/40 ${styles.border} ${styles.cardBg}`}
+                  >
                     <div className="rounded-2xl bg-primary-400/15 p-3 text-primary-300">
                       <Award className="h-5 w-5" />
                     </div>
@@ -552,7 +575,7 @@ function App() {
               <div className="section-kicker">Standout Direction</div>
               <h2 className="section-title text-4xl">Full stack delivery with Android and big data depth.</h2>
               <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
-                My positioning is strongest where software engineering, analytics, and learning agility meet. I bring real project execution today and visible growth into backend systems, Android, and data-heavy products.
+                My positioning is strongest where software engineering, problem solving, and learning agility meet. I bring real project execution today and visible growth into backend systems, Android, and data-heavy products.
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <FeatureCard title="Full Stack + Android" text="I already build web applications and I am actively expanding into Android using Kotlin." theme={theme} />
@@ -571,7 +594,7 @@ function App() {
                 <div className="section-kicker">Contact & Hire Me</div>
                 <h2 className="section-title">Let's build data-rich products and intelligent systems together.</h2>
                 <p className={`mt-5 max-w-2xl text-lg leading-8 ${styles.muted}`}>
-                  I am looking for internships and early-career opportunities where I can contribute as a big data analytics student, web development learner, Android learner, or analytics-focused builder.
+                  I am looking for internships and early-career opportunities where I can contribute as a big data student, web development learner, Android learner, or data-focused builder.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   <a href="mailto:niteshdwivedi942@gmail.com" className="inline-flex items-center gap-2 rounded-full bg-primary-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-primary-300">
@@ -642,18 +665,4 @@ function SkillIcon({ title }) {
   if (title === "Data & Big Data") return <Database className={common} />;
 
   return <Code2 className={common} />;
-}
-
-function AnalyticsFallback({ styles }) {
-  return (
-    <section id="analytics" className="section-shell mt-24">
-      <SoftCard className="p-8 md:p-10">
-        <div className="section-kicker">Data Analytics Dashboard</div>
-        <h2 className="section-title">Loading interactive charts...</h2>
-        <p className={`mt-4 max-w-3xl text-base leading-7 ${styles.muted}`}>
-          The analytics module is loaded separately to keep the first paint fast while still delivering a rich dashboard experience.
-        </p>
-      </SoftCard>
-    </section>
-  );
 }
